@@ -1,0 +1,44 @@
+{
+    "name": "rich-id/excel-generator-bundle",
+    "description": "A magic bundle",
+    "type": "symfony-bundle",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "RichId",
+            "homepage": "https://www.rich-id.fr"
+        }
+    ],
+    "support": {
+        "email": "contact@richcongress.com",
+        "source": "https://github.com/rich-id/excel-generator-bundle",
+        "docs": "https://github.com/rich-id/excel-generator-bundle/blob/master/README.md",
+        "issues": "https://github.com/rich-id/excel-generator-bundle/issues"
+    },
+    "require": {
+        "php": ">=7.3",
+        "phpoffice/phpspreadsheet": "^1.16",
+        "richcongress/bundle-toolbox": "*",
+        "symfony/expression-language": "^5.2"
+    },
+    "require-dev": {
+        "richcongress/unit-bundle": "v2.0.0.x-dev",
+        "infection/infection": "^0.16.4",
+        "php-coveralls/php-coveralls": "^2.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "RichId\\ExcelGeneratorBundle\\": ""
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "RichId\\ExcelGeneratorBundle\\Tests\\": "Tests/"
+        }
+    },
+    "config": {
+        "bin-dir": "bin",
+        "discard-changes": true,
+        "sort-packages": true
+    }
+}
