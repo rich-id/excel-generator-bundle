@@ -16,13 +16,9 @@ class RichIdExcelGeneratorExtension extends AbstractExtension
 {
     public function load(array $configs, ContainerBuilder $container): void
     {
-        $this->parseConfiguration(
-            $container,
-            new Configuration(),
-            $configs
-        );
+        //$this->parseConfiguration($container, new Configuration(), $configs);
 
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources'));
-        $loader->load('services.yml');
+        $loader->load('services.xml');
     }
 }

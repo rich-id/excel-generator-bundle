@@ -3,7 +3,7 @@
 namespace RichId\ExcelGeneratorBundle\Exception;
 
 /**
- * Interface NotSameClassException
+ * Interface ExcelExportException
  *
  * @package   RichId\ExcelGeneratorBundle\ExcelExportException
  * @author    Hugo Dumazeau <hugo.dumazeau@rich-id.fr>

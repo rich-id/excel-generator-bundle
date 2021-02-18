@@ -19,7 +19,7 @@
         "php": ">=7.3",
         "phpoffice/phpspreadsheet": "^1.16",
         "richcongress/bundle-toolbox": "*",
-        "symfony/expression-language": "^5.2"
+        "symfony/expression-language": "^4.4|^5.2"
     },
     "require-dev": {
         "richcongress/unit-bundle": "v2.0.0.x-dev",
