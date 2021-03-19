@@ -53,6 +53,10 @@ final class CellStyleUtility
             $buildStyle['font']['color'] = ['rgb' => \str_replace('#', '', $this->getStyleValueWithExpression($style->color, $data))];
         }
 
+        if ($style->fontSize !== null) {
+            $buildStyle['font']['size'] = $style->fontSize;
+        }
+
         if ($style->backgroundColor !== null) {
             $buildStyle['fill'] = [
                 'fillType'   => Fill::FILL_SOLID,

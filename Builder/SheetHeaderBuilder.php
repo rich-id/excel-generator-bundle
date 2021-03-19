@@ -40,6 +40,7 @@ final class SheetHeaderBuilder
 
     public function __invoke(Worksheet $sheet, ExcelSheetGeneratorConfiguration $configuration): void
     {
+        $currentRow = $sheet->getHighestRow() === 1 ? 2 : $sheet->getHighestRow() + 1;
         $properties = $this->propertyUtility->getPropertiesForConfig($configuration);
 
         /** @var HeaderStyle $headerStyle */
@@ -54,12 +55,12 @@ final class SheetHeaderBuilder
 
             if ($headerTitle !== null) {
                 $hasHeader = true;
-                $sheet->setCellValueByColumnAndRow($key + 1, 1, $this->getHeaderTitle($headerTitle));
+                $sheet->setCellValueByColumnAndRow($key + 1, $currentRow, $this->getHeaderTitle($headerTitle));
             }
         }
 
         if ($hasHeader && $headerStyle !== null && $headerStyle->hasStyle()) {
-            $this->cellStyleUtility->setStyleFor($sheet, $headerStyle, 1, 1, \count($properties));
+            $this->cellStyleUtility->setStyleFor($sheet, $headerStyle, $currentRow, 1, \count($properties));
         }
 
         foreach ($headerCustomStyles as $key => $headerCustomStyle) {

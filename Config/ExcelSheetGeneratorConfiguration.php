@@ -25,9 +25,6 @@ final class ExcelSheetGeneratorConfiguration
     protected $serializationGroups;
 
     /** @var bool bool */
-    protected $autoResize = false;
-
-    /** @var bool bool */
     protected $withoutHeader = false;
 
     private function __construct()
@@ -49,13 +46,6 @@ final class ExcelSheetGeneratorConfiguration
     }
 
     // Actions
-
-    public function autoResize(): self
-    {
-        $this->autoResize = true;
-
-        return $this;
-    }
 
     public function withoutHeader(): self
     {
@@ -79,11 +69,6 @@ final class ExcelSheetGeneratorConfiguration
     public function getSerializationGroups(): array
     {
         return $this->serializationGroups;
-    }
-
-    public function isAutoResize(): bool
-    {
-        return $this->autoResize;
     }
 
     public function isWithoutHeader(): bool

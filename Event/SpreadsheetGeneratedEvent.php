@@ -6,13 +6,13 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use Symfony\Contracts\EventDispatcher\Event;
 
 /**
- * Class PostSpreadsheetGenerationEvent
+ * Class SpreadsheetGeneratedEvent
  *
  * @package   RichId\ExcelGeneratorBundle\Event
  * @author    Hugo Dumazeau <hugo.dumazeau@rich-id.fr>
  * @copyright 2014 - 2021 RichId (https://www.rich-id.fr)
  */
-final class PostSpreadsheetGenerationEvent extends Event
+final class SpreadsheetGeneratedEvent extends Event
 {
     /** @var Spreadsheet */
     protected $spreadsheet;

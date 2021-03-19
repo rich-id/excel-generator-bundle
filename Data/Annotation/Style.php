@@ -21,14 +21,18 @@ abstract class Style
     /** @var string */
     public $backgroundColor;
 
+    /** @var int */
+    public $fontSize;
+
     /** @var bool */
     public $bold;
 
+    /** @var string */
     public $position;
 
     public function hasStyle(): bool
     {
-        return $this->color !== null || $this->backgroundColor !== null || $this->bold !== null || $this->position !== null;
+        return $this->color !== null || $this->backgroundColor !== null || $this->fontSize !== null || $this->bold !== null || $this->position !== null;
     }
 
     public function hasAllowedPosition(): bool
