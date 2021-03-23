@@ -2,6 +2,7 @@
 
 namespace RichId\ExcelGeneratorBundle\Utility;
 
+use PhpOffice\PhpSpreadsheet\Style\Border;
 use RichId\ExcelGeneratorBundle\Data\Annotation\Style;
 use RichId\ExcelGeneratorBundle\Data\Export;
 use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
@@ -68,6 +69,18 @@ final class CellStyleUtility
             $buildStyle['alignment'] = [
                 'horizontal' => $style->position
             ];
+        }
+
+        if ($style->hasAllowedBorder()) {
+            $borderStyle = $style->hasAllowedBorderStyle() ? $style->borderStyle : Border::BORDER_HAIR;
+            $buildStyle['borders'] = [];
+
+            foreach ($style->border as $border) {
+                $buildStyle['borders'][$border] = [
+                    'borderStyle' => $borderStyle,
+                    'color'       => ['rgb' => $style->borderColor],
+                ];
+            }
         }
 
         return $buildStyle;

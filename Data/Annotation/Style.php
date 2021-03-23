@@ -9,11 +9,13 @@ namespace RichId\ExcelGeneratorBundle\Data\Annotation;
  * @author    Hugo Dumazeau <hugo.dumazeau@rich-id.fr>
  * @copyright 2014 - 2021 RichId (https://www.rich-id.fr)
  */
-abstract class Style
+abstract class Style extends BorderStyle
 {
     public const POSITION_LEFT = 'left';
     public const POSITION_CENTER = 'center';
     public const POSITION_RIGHT = 'right';
+
+    public const BORDER_OUTLINE = 'outline';
 
     /** @var string */
     public $color;
@@ -32,7 +34,7 @@ abstract class Style
 
     public function hasStyle(): bool
     {
-        return $this->color !== null || $this->backgroundColor !== null || $this->fontSize !== null || $this->bold !== null || $this->position !== null;
+        return $this->color !== null || $this->backgroundColor !== null || $this->fontSize !== null || $this->bold !== null || $this->position !== null || $this->border !== null;;
     }
 
     public function hasAllowedPosition(): bool

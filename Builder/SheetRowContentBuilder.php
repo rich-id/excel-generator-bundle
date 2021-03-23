@@ -3,6 +3,7 @@
 namespace RichId\ExcelGeneratorBundle\Builder;
 
 use RichId\ExcelGeneratorBundle\Config\ExcelSheetGeneratorConfiguration;
+use RichId\ExcelGeneratorBundle\Data\Annotation\BorderStyle;
 use RichId\ExcelGeneratorBundle\Data\Annotation\ColumnMerge;
 use RichId\ExcelGeneratorBundle\Data\Annotation\ContentStyle;
 use RichId\ExcelGeneratorBundle\Data\Annotation\GroupBorderStyle;
@@ -63,14 +64,6 @@ final class SheetRowContentBuilder
             }
         }
 
-//        if ($rowContent instanceof ExportWithChildren) {
-//            $subConfiguration = $rowContent->getChildConfiguration();
-//
-//            foreach ($subConfiguration->getRowsContent() as $subRowContent) {
-//                ($this)($subRowContent, $sheet, $subConfiguration);
-//            }
-//        }
-//
 //        $to = \sprintf('%s%d', Coordinate::stringFromColumnIndex($key ? $key + 1 : 0), $sheet->getHighestRow());
 //
 //        $groupBorderStyle = $this->getClassAnnotationFor(\get_class($rowContent), GroupBorderStyle::class);

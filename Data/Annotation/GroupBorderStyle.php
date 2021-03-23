@@ -16,6 +16,7 @@ final class GroupBorderStyle
 {
     public const BORDER_OUTLINE = 'outline';
 
+    /** @var string */
     public $border;
 
     public function hasAllowedBorder(): bool
