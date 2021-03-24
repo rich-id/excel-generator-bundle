@@ -1,6 +1,6 @@
 {
     "name": "rich-id/excel-generator-bundle",
-    "description": "A magic bundle",
+    "description": "A excel bundle for Symfony 4.4",
     "type": "symfony-bundle",
     "license": "MIT",
     "authors": [
@@ -10,7 +10,7 @@
         }
     ],
     "support": {
-        "email": "contact@richcongress.com",
+        "email": "team-devs@rich-id.io",
         "source": "https://github.com/rich-id/excel-generator-bundle",
         "docs": "https://github.com/rich-id/excel-generator-bundle/blob/master/README.md",
         "issues": "https://github.com/rich-id/excel-generator-bundle/issues"
