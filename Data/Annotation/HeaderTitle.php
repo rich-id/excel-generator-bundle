@@ -19,4 +19,7 @@ final class HeaderTitle extends Style
 
     /** @var string */
     public $translationKey;
+
+    /** @var int */
+    public $columnMerge;
 }

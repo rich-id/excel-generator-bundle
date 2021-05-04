@@ -57,6 +57,10 @@ final class SheetHeaderBuilder
                 $hasHeader = true;
                 $sheet->setCellValueByColumnAndRow($key + 1, $currentRow, $this->getHeaderTitle($headerTitle));
             }
+
+            if ($headerTitle !== null && is_int($headerTitle->columnMerge)) {
+                $sheet->mergeCellsByColumnAndRow($key + 1, $currentRow, $key + $headerTitle->columnMerge, $currentRow);
+            }
         }
 
         if ($hasHeader && $headerStyle !== null && $headerStyle->hasStyle()) {
