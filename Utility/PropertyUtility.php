@@ -38,7 +38,7 @@ final class PropertyUtility
     public function getPropertiesForConfigAndData(ExcelSheetGeneratorConfiguration $configuration, Export $rowContent): array
     {
         $properties = [];
-        $reflectionClass = new \ReflectionClass($configuration->getClass());
+        $reflectionClass = new \ReflectionClass(\get_class($rowContent));
 
         $normalizedObject = $this->getNormalizedDataForExportData($configuration, $rowContent);
         $propertiesName = \array_keys($normalizedObject);

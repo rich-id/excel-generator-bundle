@@ -31,10 +31,13 @@ final class ExcelSheetGeneratorConfiguration
     {
     }
 
-    public static function create(string $class, array $rowsContent, array $serializationGroups = []): ExcelSheetGeneratorConfiguration
+    public static function create(string $class, array $rowsContent, array $serializationGroups = [], bool $ignoreClassAssertion = false): ExcelSheetGeneratorConfiguration
     {
         self::assertClassSubclassOfExport($class);
-        self::assertRowsContentSameClassAs($class, $rowsContent);
+
+        if (!$ignoreClassAssertion) {
+            self::assertRowsContentSameClassAs($class, $rowsContent);
+        }
 
         $config = new self();
 

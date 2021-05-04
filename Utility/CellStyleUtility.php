@@ -38,6 +38,7 @@ final class CellStyleUtility
             ? \sprintf('%s%d', Coordinate::stringFromColumnIndex($from), $row)
             : \sprintf('%s%d:%s%d', Coordinate::stringFromColumnIndex($from), $row, Coordinate::stringFromColumnIndex($to), $row);
 
+
         $sheet->getStyle($items)
             ->applyFromArray($this->buildStyleToApply($style, $data));
     }
@@ -51,7 +52,11 @@ final class CellStyleUtility
         }
 
         if ($style->color !== null) {
-            $buildStyle['font']['color'] = ['rgb' => \str_replace('#', '', $this->getStyleValueWithExpression($style->color, $data))];
+            $hexCode = $this->getStyleValueWithExpression($style->color, $data);
+
+            if ($hexCode !== null) {
+                $buildStyle['font']['color'] = ['rgb' => \str_replace('#', '', $hexCode)];
+            }
         }
 
         if ($style->fontSize !== null) {
@@ -59,16 +64,28 @@ final class CellStyleUtility
         }
 
         if ($style->backgroundColor !== null) {
-            $buildStyle['fill'] = [
-                'fillType'   => Fill::FILL_SOLID,
-                'startColor' => ['rgb' => \str_replace('#', '', $this->getStyleValueWithExpression($style->backgroundColor, $data))]
-            ];
+            $hexCode = $this->getStyleValueWithExpression($style->backgroundColor, $data);
+
+            if ($hexCode !== null) {
+                $buildStyle['fill'] = [
+                    'fillType'   => Fill::FILL_SOLID,
+                    'startColor' => ['rgb' => \str_replace('#', '', $hexCode)]
+                ];
+            }
         }
 
         if ($style->hasAllowedPosition()) {
             $buildStyle['alignment'] = [
                 'horizontal' => $style->position
             ];
+        }
+
+        if ($style->hasAllowedVerticalPosition()) {
+            if (!isset($buildStyle['alignment'])) {
+                $buildStyle['alignment'] = [];
+            }
+
+            $buildStyle['alignment']['vertical'] = $style->verticalPosition;
         }
 
         if ($style->hasAllowedBorder()) {
@@ -83,10 +100,18 @@ final class CellStyleUtility
             }
         }
 
+        if ($style->wrapText === true) {
+            if (!isset($buildStyle['alignment'])) {
+                $buildStyle['alignment'] = [];
+            }
+
+            $buildStyle['alignment']['wrapText'] = true;
+        }
+
         return $buildStyle;
     }
 
-    private function getStyleValueWithExpression(string $value, ?Export $data = null): string
+    private function getStyleValueWithExpression(string $value, ?Export $data = null): ?string
     {
         if (\strpos($value, 'this.') !== false && $data !== null) {
             try {
