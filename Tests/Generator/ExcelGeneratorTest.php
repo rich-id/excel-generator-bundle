@@ -35,41 +35,45 @@ final class ExcelGeneratorTest extends TestCase
 
     public function testGenerate(): void
     {
-        $filePath = $this->cacheDirectory . '/spreadsheet.xls';
+        $excelSpreadsheet = $this->generateExcelSpreadsheet();
+        $filePath = $this->cacheDirectory . '/' . $excelSpreadsheet->filename;
 
         if (file_exists($filePath)) {
             unlink($filePath);
         }
 
-        $excelSpreadsheet = new ExcelSpreadsheet();
-        $excelSpreadsheet->filename = 'spreadsheet.xls';
-
-        $excelSheet = new ExcelSheet();
-        $excelSheet->name = 'Sheet 1';
-        $excelSpreadsheet->addSheet($excelSheet);
-
-        $content = new DummyExcelContent();
-        $content->property1 = 'First row';
-        $excelSheet->addChild($content);
-
-        $content = new DummyExcelContent();
-        $content->property1 = 'Second row';
-        $excelSheet->addChild($content);
-
-        $excelSheet = new ExcelSheet();
-        $excelSheet->name = 'Sheet 2';
-        $excelSpreadsheet->addSheet($excelSheet);
-
-        $content = new DummyExcelContent();
-        $content->property1 = 'First row';
-        $excelSheet->addChild($content);
-
-        $content = new DummyExcelContent();
-        $content->property1 = 'Second row';
-        $excelSheet->addChild($content);
-
         $this->generator->save($excelSpreadsheet, $this->cacheDirectory);
 
         self::assertFileExists($filePath);
+    }
+
+    private function generateExcelSpreadsheet(): ExcelSpreadsheet
+    {
+        $content1 = new DummyExcelContent();
+        $content1->property1 = 'First row';
+        $content2 = new DummyExcelContent();
+        $content2->property1 = 'Second row';
+
+        $excelSheet1 = new ExcelSheet();
+        $excelSheet1->name = 'Sheet 1';
+        $excelSheet1->addChild($content1);
+        $excelSheet1->addChild($content2);
+
+        $childContent = new DummyExcelContent();
+        $childContent->property1 = 'Child';
+        $parentContent = new DummyExcelContent();
+        $parentContent->property1 = 'Parent';
+        $parentContent->addChild($childContent);
+
+        $excelSheet2 = new ExcelSheet();
+        $excelSheet2->name = 'Sheet 2';
+        $excelSheet2->addChild($parentContent);
+
+        $excelSpreadsheet = new ExcelSpreadsheet();
+        $excelSpreadsheet->filename = 'spreadsheet.xls';
+        $excelSpreadsheet->addSheet($excelSheet1);
+        $excelSpreadsheet->addSheet($excelSheet2);
+
+        return $excelSpreadsheet;
     }
 }
