@@ -17,14 +17,19 @@
     },
     "require": {
         "php": ">=7.3",
+        "doctrine/annotations": "^1.12",
         "phpoffice/phpspreadsheet": "^1.16",
         "richcongress/bundle-toolbox": "*",
-        "symfony/expression-language": "^4.4|^5.2"
+        "symfony/expression-language": "^4|^5",
+        "symfony/serializer-pack": "^1.0",
+        "symfony/translation": "^4|^5",
+        "symfony/validator": "^4|^5"
     },
     "require-dev": {
-        "richcongress/unit-bundle": "v2.0.0.x-dev",
+        "roave/security-advisories": "dev-latest",
         "infection/infection": "^0.16.4",
-        "php-coveralls/php-coveralls": "^2.1"
+        "php-coveralls/php-coveralls": "^2.1",
+        "richcongress/test-suite": "^0.1"
     },
     "autoload": {
         "psr-4": {

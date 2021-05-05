@@ -12,7 +12,7 @@ use Symfony\Contracts\EventDispatcher\Event;
  * @author    Hugo Dumazeau <hugo.dumazeau@rich-id.fr>
  * @copyright 2014 - 2021 RichId (https://www.rich-id.fr)
  */
-final class SheetGeneratedEvent extends Event
+class SheetGeneratedEvent extends Event
 {
     /** @var Worksheet */
     protected $sheet;

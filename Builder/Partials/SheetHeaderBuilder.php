@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace RichId\ExcelGeneratorBundle\Builder;
+namespace RichId\ExcelGeneratorBundle\Builder\Partials;
 
 use RichId\ExcelGeneratorBundle\Config\ExcelSheetGeneratorConfiguration;
-use RichId\ExcelGeneratorBundle\Data\Annotation\HeaderStyle;
-use RichId\ExcelGeneratorBundle\Data\Annotation\HeaderTitle;
+use RichId\ExcelGeneratorBundle\Annotation\HeaderStyle;
+use RichId\ExcelGeneratorBundle\Annotation\HeaderTitle;
 use RichId\ExcelGeneratorBundle\Utility\AnnotationReaderTrait;
 use RichId\ExcelGeneratorBundle\Utility\CellStyleUtility;
 use RichId\ExcelGeneratorBundle\Utility\PropertyUtility;
@@ -14,11 +14,11 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 /**
  * Class SheetHeaderBuilder
  *
- * @package   RichId\ExcelGeneratorBundle\Builder
+ * @package   RichId\ExcelGeneratorBundle\Builder\Partials
  * @author    Hugo Dumazeau <hugo.dumazeau@rich-id.fr>
  * @copyright 2014 - 2021 RichId (https://www.rich-id.fr)
  */
-final class SheetHeaderBuilder
+class SheetHeaderBuilder
 {
     use AnnotationReaderTrait;
 

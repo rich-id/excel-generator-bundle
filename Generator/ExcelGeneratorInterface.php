@@ -2,7 +2,7 @@
 
 namespace RichId\ExcelGeneratorBundle\Generator;
 
-use Symfony\Component\HttpFoundation\StreamedResponse;
+use RichId\ExcelGeneratorBundle\Model\ExcelSpreadsheet;
 
 /**
  * Interface ExcelGeneratorInterface
@@ -13,7 +13,5 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
  */
 interface ExcelGeneratorInterface
 {
-    public function save(array $sheets, string $filename, string $path): void;
-
-    public function generateResponse(array $sheets, string $filename): StreamedResponse;
+    public function save(ExcelSpreadsheet $excelSpreadsheet, string $path): void;
 }

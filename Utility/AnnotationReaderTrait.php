@@ -14,7 +14,7 @@ use Doctrine\Common\Annotations\AnnotationReader;
 trait AnnotationReaderTrait
 {
     /** @var AnnotationReader */
-    protected $annotationReader;
+    private $annotationReader;
 
     protected function getClassAnnotationFor(string $class, string $annotation)
     {
@@ -28,10 +28,10 @@ trait AnnotationReaderTrait
 
     private function getAnnotationReader(): AnnotationReader
     {
-        if ($this->annotationReader !== null) {
-            return $this->annotationReader;
+        if ($this->annotationReader === null) {
+            $this->annotationReader = new AnnotationReader();
         }
 
-        return new AnnotationReader();
+        return $this->annotationReader;
     }
 }

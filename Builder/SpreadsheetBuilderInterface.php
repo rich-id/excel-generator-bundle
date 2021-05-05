@@ -3,6 +3,7 @@
 namespace RichId\ExcelGeneratorBundle\Builder;
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use RichId\ExcelGeneratorBundle\Model\ExcelSpreadsheet;
 
 /**
  * Interface SpreadsheetBuilderInterface
@@ -13,5 +14,5 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
  */
 interface SpreadsheetBuilderInterface
 {
-    public function buildSpreadsheet(array $sheets): Spreadsheet;
+    public function build(ExcelSpreadsheet $excelSpreadsheet): Spreadsheet;
 }

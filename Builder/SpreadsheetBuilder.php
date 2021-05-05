@@ -2,12 +2,18 @@
 
 namespace RichId\ExcelGeneratorBundle\Builder;
 
-use RichId\ExcelGeneratorBundle\Config\ExcelSheetGeneratorConfiguration;
-use RichId\ExcelGeneratorBundle\Data\ExportWithChildren;
+use RichId\ExcelGeneratorBundle\Builder\Partials\SheetColumnsSizeBuilder;
+use RichId\ExcelGeneratorBundle\Builder\Partials\SheetHeaderBuilder;
+use RichId\ExcelGeneratorBundle\Builder\Partials\SheetRowContentBuilder;
 use RichId\ExcelGeneratorBundle\Event\SheetGeneratedEvent;
 use RichId\ExcelGeneratorBundle\Event\SpreadsheetGeneratedEvent;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
+use RichId\ExcelGeneratorBundle\Exception\InvalidExcelSpreadsheetException;
+use RichId\ExcelGeneratorBundle\Model\ExcelContent;
+use RichId\ExcelGeneratorBundle\Model\ExcelSheet;
+use RichId\ExcelGeneratorBundle\Model\ExcelSpreadsheet;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -17,7 +23,7 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
  * @author    Hugo Dumazeau <hugo.dumazeau@rich-id.fr>
  * @copyright 2014 - 2021 RichId (https://www.rich-id.fr)
  */
-final class SpreadsheetBuilder implements SpreadsheetBuilderInterface
+class SpreadsheetBuilder implements SpreadsheetBuilderInterface
 {
     /** @var EventDispatcherInterface */
     protected $eventDispatcher;
@@ -31,92 +37,77 @@ final class SpreadsheetBuilder implements SpreadsheetBuilderInterface
     /** @var SheetColumnsSizeBuilder */
     protected $sheetColumnsSizeBuilder;
 
+    /** @var ValidatorInterface */
+    protected $validator;
+
     public function __construct(
         EventDispatcherInterface $eventDispatcher,
         SheetHeaderBuilder $sheetHeaderBuilder,
         SheetRowContentBuilder $sheetRowContentBuilder,
-        SheetColumnsSizeBuilder $sheetColumnsSizeBuilder
+        SheetColumnsSizeBuilder $sheetColumnsSizeBuilder,
+        ValidatorInterface $validator
     )
     {
         $this->eventDispatcher = $eventDispatcher;
         $this->sheetHeaderBuilder = $sheetHeaderBuilder;
         $this->sheetRowContentBuilder = $sheetRowContentBuilder;
         $this->sheetColumnsSizeBuilder = $sheetColumnsSizeBuilder;
+        $this->validator = $validator;
     }
 
-    public function buildSpreadsheet(array $sheets): Spreadsheet
+    public function build(ExcelSpreadsheet $excelSpreadsheet): Spreadsheet
     {
-        $spreadsheet = new Spreadsheet();
-        $worksheetCounter = 0;
+        $violations = $this->validator->validate($excelSpreadsheet);
 
-        foreach ($sheets as $sheetName => $sheet) {
-            if ($worksheetCounter > 0) {
-                $worksheet = new Worksheet();
-                $worksheet->setTitle((string) $sheetName);
-                $spreadsheet->addSheet($worksheet, $worksheetCounter);
-                $spreadsheet->setActiveSheetIndex($worksheetCounter);
-            }
-
-            $this->addSheetIn($spreadsheet->getActiveSheet(), $this->getConfigurations($sheet));
-            $spreadsheet->getActiveSheet()->removeRow(1);
-
-            $this->eventDispatcher->dispatch(SheetGeneratedEvent::create($spreadsheet->getActiveSheet()));
-
-            $worksheetCounter ++;
+        if ($violations->count() > 0) {
+            throw new InvalidExcelSpreadsheetException($excelSpreadsheet, $violations);
         }
 
-        $spreadsheet->setActiveSheetIndex(0);
+        $sheets = $excelSpreadsheet->getSheets();
+        $spreadsheet = new Spreadsheet();
 
-        $this->eventDispatcher->dispatch(SpreadsheetGeneratedEvent::create($spreadsheet));
+        foreach ($sheets as $index => $sheet) {
+            $worksheet = $index === 0 ? $spreadsheet->getSheet(0) : new Worksheet();
+            $this->buildSheet($worksheet, $sheet);
+
+            if ($index !== 0) {
+                $spreadsheet->addSheet($worksheet, $index);
+            }
+        }
+
+        $event = SpreadsheetGeneratedEvent::create($spreadsheet);
+        $this->eventDispatcher->dispatch($event);
 
         return $spreadsheet;
     }
 
-    private function addSheetIn(Worksheet $sheet, array $configurations): void
+    protected function buildSheet(Worksheet $worksheet, ExcelSheet $excelSheet): Worksheet
     {
-        $lastIndex = \array_key_last($configurations);
+        $worksheet->setTitle($excelSheet->name);
 
-        foreach ($configurations as $index => $configuration) {
-            if (!$configuration->isWithoutHeader()) {
-                ($this->sheetHeaderBuilder)($sheet, $configuration);
-            }
-
-            foreach ($configuration->getRowsContent() as $rowContent) {
-                ($this->sheetRowContentBuilder)($rowContent, $sheet, $configuration);
-
-                if ($rowContent instanceof ExportWithChildren) {
-                    $this->addSheetIn($sheet, [$rowContent->getChildConfiguration()]);
-                }
-            }
-
-            ($this->sheetColumnsSizeBuilder)($sheet, $configuration);
-
-            if ($index !== $lastIndex) {
-                $sheet->setCellValueByColumnAndRow(1, $sheet->getHighestRow() + 1, '');
-            }
+        foreach ($excelSheet->getChildren() as $child) {
+            $this->buildContent($worksheet, $child);
         }
+
+        $event = SheetGeneratedEvent::create($worksheet);
+        $this->eventDispatcher->dispatch($event);
+
+        return $worksheet;
     }
 
-    private function getConfigurations($config): array
+    protected function buildContent(Worksheet $worksheet, ExcelContent $excelContent): void
     {
-        if ($config instanceof ExcelSheetGeneratorConfiguration) {
-            return [$config];
+//        if (!$configuration->isWithoutHeader()) {
+//            ($this->sheetHeaderBuilder)($sheet, $configuration);
+//        }
+
+        ($this->sheetRowContentBuilder)($worksheet, $excelContent);
+        $worksheet->setCellValueByColumnAndRow(1, $worksheet->getHighestRow() + 1, '');
+
+        foreach ($excelContent->getChildren() as $child) {
+            $this->buildContent($worksheet, $child);
         }
 
-        if (!\is_iterable($config)) {
-            throw new \InvalidArgumentException();
-        }
-
-        $configurations = [];
-
-        foreach ($config as $configuration) {
-            if (!$configuration instanceof ExcelSheetGeneratorConfiguration) {
-                throw new \InvalidArgumentException();
-            }
-
-            $configurations[] = $configuration;
-        }
-
-        return $configurations;
+//        ($this->sheetColumnsSizeBuilder)($sheet, $configuration);
     }
 }

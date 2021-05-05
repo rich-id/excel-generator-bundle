@@ -1,23 +1,23 @@
 <?php declare(strict_types=1);
 
-namespace RichId\ExcelGeneratorBundle\Builder;
+namespace RichId\ExcelGeneratorBundle\Builder\Partials;
 
 use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use RichId\ExcelGeneratorBundle\Config\ExcelSheetGeneratorConfiguration;
-use RichId\ExcelGeneratorBundle\Data\Annotation\ColumnDimension;
-use RichId\ExcelGeneratorBundle\Data\Annotation\ColumnsAutoResize;
+use RichId\ExcelGeneratorBundle\Annotation\ColumnDimension;
+use RichId\ExcelGeneratorBundle\Annotation\ColumnsAutoResize;
 use RichId\ExcelGeneratorBundle\Utility\AnnotationReaderTrait;
 use RichId\ExcelGeneratorBundle\Utility\PropertyUtility;
 
 /**
  * Class SheetColumnsSizeBuilder
  *
- * @package   RichId\ExcelGeneratorBundle\Builder
+ * @package   RichId\ExcelGeneratorBundle\Builder\Partials
  * @author    Hugo Dumazeau <hugo.dumazeau@rich-id.fr>
  * @copyright 2014 - 2021 RichId (https://www.rich-id.fr)
  */
-final class SheetColumnsSizeBuilder
+class SheetColumnsSizeBuilder
 {
     use AnnotationReaderTrait;
 

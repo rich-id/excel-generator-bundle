@@ -3,11 +3,11 @@
 namespace RichId\ExcelGeneratorBundle\Utility;
 
 use PhpOffice\PhpSpreadsheet\Style\Border;
-use RichId\ExcelGeneratorBundle\Data\Annotation\Style;
-use RichId\ExcelGeneratorBundle\Data\Export;
+use RichId\ExcelGeneratorBundle\Annotation\Style;
 use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 use PhpOffice\PhpSpreadsheet\Style\Fill;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
+use RichId\ExcelGeneratorBundle\Model\ExcelContent;
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 
 /**
@@ -32,7 +32,7 @@ final class CellStyleUtility
         $this->setStyleOfDataFor($sheet, $style, $row, $from, null, $to);
     }
 
-    public function setStyleOfDataFor(Worksheet $sheet, Style $style, int $row, int $from, ?Export $data, ?int $to = null): void
+    public function setStyleOfDataFor(Worksheet $sheet, Style $style, int $row, int $from, ?ExcelContent $data, ?int $to = null): void
     {
         $items = $to === null
             ? \sprintf('%s%d', Coordinate::stringFromColumnIndex($from), $row)
@@ -43,7 +43,7 @@ final class CellStyleUtility
             ->applyFromArray($this->buildStyleToApply($style, $data));
     }
 
-    private function buildStyleToApply(Style $style, ?Export $data = null): array
+    private function buildStyleToApply(Style $style, ?ExcelContent $data = null): array
     {
         $buildStyle = [];
 
@@ -111,16 +111,16 @@ final class CellStyleUtility
         return $buildStyle;
     }
 
-    private function getStyleValueWithExpression(string $value, ?Export $data = null): ?string
+    private function getStyleValueWithExpression(string $value, ?ExcelContent $data = null): ?string
     {
-        if (\strpos($value, 'this.') !== false && $data !== null) {
-            try {
-                return $this->expressionLanguage->evaluate($value, ['this' => $data]);
-            } catch (\Exception $e) {
-                return '';
-            }
-        } else {
+        if ($data === null || \strpos($value, 'this.') === false) {
             return $value;
+        }
+
+        try {
+            return $this->expressionLanguage->evaluate($value, ['this' => $data]);
+        } catch (\Exception $e) {
+            return '';
         }
     }
 }

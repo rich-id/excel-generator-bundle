@@ -13,5 +13,4 @@ use RichCongress\BundleToolbox\Configuration\AbstractBundle;
  */
 class RichIdExcelGeneratorBundle extends AbstractBundle
 {
-    public const COMPILER_PASSES = [];
 }

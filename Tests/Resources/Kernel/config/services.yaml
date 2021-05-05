@@ -1,0 +1,11 @@
+services:
+    _defaults:
+        autoconfigure: true
+        autowire: true
+        public: true
+
+    RichId\ExcelGeneratorBundle\Generator\ExcelGenerator:
+        public: true
+
+    RichId\ExcelGeneratorBundle\Builder\SpreadsheetBuilder:
+        public: true

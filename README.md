@@ -1,6 +1,6 @@
-![Test Image 1](.github/excel-generator-bundle.svg)
+![Logo](.github/excel-generator-bundle.svg)
 
-Getting Started With RichIdExcelGeneratorBundle
+Rich ID Excel Generator Bundle
 =======================================
 
 This version of the bundle requires Symfony 4.4+ and PHP 7.3+.

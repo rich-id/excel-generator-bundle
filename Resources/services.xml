@@ -10,9 +10,9 @@
         <service id="RichId\ExcelGeneratorBundle\Generator\ExcelGenerator" />
         <service id="RichId\ExcelGeneratorBundle\Generator\ExcelGeneratorInterface" alias="RichId\ExcelGeneratorBundle\Generator\ExcelGenerator" />
 
-        <service id="RichId\ExcelGeneratorBundle\Builder\SheetColumnsSizeBuilder" />
-        <service id="RichId\ExcelGeneratorBundle\Builder\SheetHeaderBuilder" />
-        <service id="RichId\ExcelGeneratorBundle\Builder\SheetRowContentBuilder" />
+        <service id="RichId\ExcelGeneratorBundle\Builder\Partials\SheetColumnsSizeBuilder" />
+        <service id="RichId\ExcelGeneratorBundle\Builder\Partials\SheetHeaderBuilder" />
+        <service id="RichId\ExcelGeneratorBundle\Builder\Partials\SheetRowContentBuilder" />
         <service id="RichId\ExcelGeneratorBundle\Builder\SpreadsheetBuilder" />
         <service id="RichId\ExcelGeneratorBundle\Builder\SpreadsheetBuilderInterface" alias="RichId\ExcelGeneratorBundle\Builder\SpreadsheetBuilder" />
 
