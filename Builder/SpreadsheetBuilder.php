@@ -3,10 +3,7 @@
 namespace RichId\ExcelGeneratorBundle\Builder;
 
 use RichId\ExcelGeneratorBundle\Builder\Partials\AbstractBuilder;
-use RichId\ExcelGeneratorBundle\Builder\Partials\SheetColumnsSizeBuilder;
-use RichId\ExcelGeneratorBundle\Builder\Partials\SheetHeaderBuilder;
 use RichId\ExcelGeneratorBundle\Builder\Partials\SheetRowContentBuilder;
-use RichId\ExcelGeneratorBundle\Event\ExcelRowGeneratedEvent;
 use RichId\ExcelGeneratorBundle\Event\ExcelRowPreGeneratedEvent;
 use RichId\ExcelGeneratorBundle\Event\ExcelSheetGeneratedEvent;
 use RichId\ExcelGeneratorBundle\Event\ExcelSpreadsheetGeneratedEvent;
@@ -29,9 +26,6 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class SpreadsheetBuilder extends AbstractBuilder implements SpreadsheetBuilderInterface
 {
-    /** @var SheetHeaderBuilder */
-    protected $sheetHeaderBuilder;
-
     /** @var SheetRowContentBuilder */
     protected $sheetRowContentBuilder;
 
@@ -39,12 +33,10 @@ class SpreadsheetBuilder extends AbstractBuilder implements SpreadsheetBuilderIn
     protected $validator;
 
     public function __construct(
-        SheetHeaderBuilder $sheetHeaderBuilder,
         SheetRowContentBuilder $sheetRowContentBuilder,
         ValidatorInterface $validator
     )
     {
-        $this->sheetHeaderBuilder = $sheetHeaderBuilder;
         $this->sheetRowContentBuilder = $sheetRowContentBuilder;
         $this->validator = $validator;
     }

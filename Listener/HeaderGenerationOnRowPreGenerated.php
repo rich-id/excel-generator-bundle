@@ -32,15 +32,20 @@ class HeaderGenerationOnRowPreGenerated
     /** @var TranslatorInterface */
     protected $translator;
 
-    public function __construct(CellConfigurationsExtractor $configurationExtractor, TranslatorInterface $translator)
+    public function __construct(
+        CellConfigurationsExtractor $cellConfigurationsExtractor,
+        SheetRowContentBuilder $sheetRowContentBuilder,
+        TranslatorInterface $translator
+    )
     {
-        $this->cellConfigurationsExtractor = $configurationExtractor;
+        $this->cellConfigurationsExtractor = $cellConfigurationsExtractor;
+        $this->sheetRowContentBuilder = $sheetRowContentBuilder;
         $this->translator = $translator;
     }
 
     public function __invoke(ExcelRowPreGeneratedEvent $event): void
     {
-        $cellConfigurations = ($this->cellConfigurationsExtractor)($event->model);
+        $cellConfigurations = $this->cellConfigurationsExtractor->getCellConfigurations($event->model);
         $row = (int) $event->worksheet->getHighestRow();
 
         if (!$this->hasHeader($cellConfigurations)) {

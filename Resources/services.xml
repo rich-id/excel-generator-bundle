@@ -12,14 +12,12 @@
         <service id="RichId\ExcelGeneratorBundle\Generator\ExcelGeneratorInterface" alias="RichId\ExcelGeneratorBundle\Generator\ExcelGenerator" />
 
         <!-- Builders -->
-        <service id="RichId\ExcelGeneratorBundle\Builder\Partials\SheetColumnsSizeBuilder" />
-        <service id="RichId\ExcelGeneratorBundle\Builder\Partials\SheetHeaderBuilder" />
         <service id="RichId\ExcelGeneratorBundle\Builder\Partials\SheetRowContentBuilder" />
         <service id="RichId\ExcelGeneratorBundle\Builder\SpreadsheetBuilder" />
         <service id="RichId\ExcelGeneratorBundle\Builder\SpreadsheetBuilderInterface" alias="RichId\ExcelGeneratorBundle\Builder\SpreadsheetBuilder" />
 
         <!-- ConfigurationExtractors -->
-        <service id="RichId\ExcelGeneratorBundle\ConfigurationExtractor\ExcelContentConfigurationExtractor" />
+        <service id="RichId\ExcelGeneratorBundle\ConfigurationExtractor\CellConfigurationsExtractor" />
 
         <!-- Listeners -->
         <service id="RichId\ExcelGeneratorBundle\Listener\AlignmentStyleOnCellGenerated">
@@ -33,6 +31,12 @@
         </service>
         <service id="RichId\ExcelGeneratorBundle\Listener\ColumnMergingOnCellGenerated">
             <tag name="kernel.event_listener" priority="10" />
+        </service>
+        <service id="RichId\ExcelGeneratorBundle\Listener\ComputeColumnsSizeOnRowGenerated">
+            <tag name="kernel.event_listener" />
+        </service>
+        <service id="RichId\ExcelGeneratorBundle\Listener\HeaderGenerationOnRowPreGenerated">
+            <tag name="kernel.event_listener" />
         </service>
         <service id="RichId\ExcelGeneratorBundle\Listener\TextStyleOnCellGenerated">
             <tag name="kernel.event_listener" />

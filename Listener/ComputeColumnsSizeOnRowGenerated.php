@@ -30,8 +30,7 @@ class ComputeColumnsSizeOnRowGenerated
     public function __invoke(ExcelRowGeneratedEvent $event): void
     {
         $this->autoResizeAllColumns($event);
-        /** @var CellConfiguration[] $cellConfigurations */
-        $cellConfigurations = ($this->cellConfigurationsExtractor)($event->model);
+        $cellConfigurations = $this->cellConfigurationsExtractor->getCellConfigurations($event->model);
 
         foreach ($cellConfigurations as $index => $cellConfiguration) {
             $this->resizeColumn($event, $cellConfiguration, $index);
