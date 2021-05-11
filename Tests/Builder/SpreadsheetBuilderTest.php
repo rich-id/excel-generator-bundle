@@ -31,7 +31,7 @@ class SpreadsheetBuilderTest extends TestCase
         $this->expectException(InvalidExcelSpreadsheetException::class);
 
         $excelSpreadsheet = new ExcelSpreadsheet();
-        $this->builder->build($excelSpreadsheet);
+        ($this->builder)($excelSpreadsheet);
     }
 
     public function testEmptySpreadsheet(): void
@@ -39,7 +39,7 @@ class SpreadsheetBuilderTest extends TestCase
         $excelSpreadsheet = new ExcelSpreadsheet();
         $excelSpreadsheet->filename = 'spreadsheet.xls';
 
-        $spreadsheet = $this->builder->build($excelSpreadsheet);
+        $spreadsheet = ($this->builder)($excelSpreadsheet);
 
         self::assertCount(1, $spreadsheet->getAllSheets());
     }
@@ -57,7 +57,7 @@ class SpreadsheetBuilderTest extends TestCase
         $excelSheet->name = 'Sheet 2';
         $excelSpreadsheet->addSheet($excelSheet);
 
-        $spreadsheet = $this->builder->build($excelSpreadsheet);
+        $spreadsheet = ($this->builder)($excelSpreadsheet);
         $sheets = $spreadsheet->getAllSheets();
 
         self::assertCount(2, $sheets);
@@ -85,7 +85,7 @@ class SpreadsheetBuilderTest extends TestCase
         $content = new DummyExcelContent();
         $excelSheet->addChild($content);
 
-        $spreadsheet = $this->builder->build($excelSpreadsheet);
+        $spreadsheet = ($this->builder)($excelSpreadsheet);
         $sheet = $spreadsheet->getAllSheets()[0] ?? null;
         self::assertInstanceOf(Worksheet::class, $sheet);
 

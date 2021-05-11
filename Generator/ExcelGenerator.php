@@ -25,7 +25,7 @@ class ExcelGenerator implements ExcelGeneratorInterface
 
     public function save(ExcelSpreadsheet $excelSpreadsheet, string $path): void
     {
-        $spreadsheet = $this->spreadsheetBuilder->build($excelSpreadsheet);
+        $spreadsheet = ($this->spreadsheetBuilder)($excelSpreadsheet);
         $fullPath = \sprintf('%s/%s', $path, $excelSpreadsheet->filename);
 
         $writer = new Xlsx($spreadsheet);

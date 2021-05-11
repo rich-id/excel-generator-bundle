@@ -2,7 +2,7 @@
 
 namespace RichId\ExcelGeneratorBundle\Model;
 
-use RichId\ExcelGeneratorBundle\Constraints\CorrectParent;
+use RichId\ExcelGeneratorBundle\Validator\Constraints as ExcelConstraints;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -20,7 +20,7 @@ abstract class AbstractExcelChild
      * @Assert\Valid()
      * @Assert\All({
      *     @Assert\Type("RichId\ExcelGeneratorBundle\Model\ExcelContent"),
-     *     @CorrectParent()
+     *     @ExcelConstraints\CorrectParent()
      * })
      */
     private $children = [];

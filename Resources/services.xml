@@ -7,16 +7,38 @@
     <services>
         <defaults autowire="true" autoconfigure="true" public="false"/>
 
+        <!-- Generator -->
         <service id="RichId\ExcelGeneratorBundle\Generator\ExcelGenerator" />
         <service id="RichId\ExcelGeneratorBundle\Generator\ExcelGeneratorInterface" alias="RichId\ExcelGeneratorBundle\Generator\ExcelGenerator" />
 
+        <!-- Builders -->
         <service id="RichId\ExcelGeneratorBundle\Builder\Partials\SheetColumnsSizeBuilder" />
         <service id="RichId\ExcelGeneratorBundle\Builder\Partials\SheetHeaderBuilder" />
         <service id="RichId\ExcelGeneratorBundle\Builder\Partials\SheetRowContentBuilder" />
         <service id="RichId\ExcelGeneratorBundle\Builder\SpreadsheetBuilder" />
         <service id="RichId\ExcelGeneratorBundle\Builder\SpreadsheetBuilderInterface" alias="RichId\ExcelGeneratorBundle\Builder\SpreadsheetBuilder" />
 
-        <service id="RichId\ExcelGeneratorBundle\Utility\CellStyleUtility" />
-        <service id="RichId\ExcelGeneratorBundle\Utility\PropertyUtility" />
+        <!-- ConfigurationExtractors -->
+        <service id="RichId\ExcelGeneratorBundle\ConfigurationExtractor\ExcelContentConfigurationExtractor" />
+
+        <!-- Listeners -->
+        <service id="RichId\ExcelGeneratorBundle\Listener\AlignmentStyleOnCellGenerated">
+            <tag name="kernel.event_listener" />
+        </service>
+        <service id="RichId\ExcelGeneratorBundle\Listener\BackgroundStyleOnCellGenerated">
+            <tag name="kernel.event_listener" />
+        </service>
+        <service id="RichId\ExcelGeneratorBundle\Listener\BorderStyleOnCellGenerated">
+            <tag name="kernel.event_listener" />
+        </service>
+        <service id="RichId\ExcelGeneratorBundle\Listener\ColumnMergingOnCellGenerated">
+            <tag name="kernel.event_listener" priority="10" />
+        </service>
+        <service id="RichId\ExcelGeneratorBundle\Listener\TextStyleOnCellGenerated">
+            <tag name="kernel.event_listener" />
+        </service>
+
+        <!-- Validations -->
+        <service id="RichId\ExcelGeneratorBundle\Validator\Constraints\CorrectParentValidator" />
     </services>
 </container>

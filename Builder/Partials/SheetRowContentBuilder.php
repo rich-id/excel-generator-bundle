@@ -2,16 +2,12 @@
 
 namespace RichId\ExcelGeneratorBundle\Builder\Partials;
 
-use RichId\ExcelGeneratorBundle\Config\ExcelSheetGeneratorConfiguration;
-use RichId\ExcelGeneratorBundle\Annotation\ColumnMerge;
-use RichId\ExcelGeneratorBundle\Annotation\ContentStyle;
-use RichId\ExcelGeneratorBundle\Data\Export;
+use RichId\ExcelGeneratorBundle\ConfigurationExtractor\CellConfigurationsExtractor;
+use RichId\ExcelGeneratorBundle\ConfigurationExtractor\Model\CellConfiguration;
+use RichId\ExcelGeneratorBundle\Event\ExcelCellGeneratedEvent;
+use RichId\ExcelGeneratorBundle\Event\ExcelRowGeneratedEvent;
 use RichId\ExcelGeneratorBundle\Model\ExcelContent;
-use RichId\ExcelGeneratorBundle\Utility\AnnotationReaderTrait;
-use RichId\ExcelGeneratorBundle\Utility\CellStyleUtility;
-use RichId\ExcelGeneratorBundle\Utility\PropertyUtility;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Class SheetRowContentBuilder
@@ -20,56 +16,34 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  * @author    Hugo Dumazeau <hugo.dumazeau@rich-id.fr>
  * @copyright 2014 - 2021 RichId (https://www.rich-id.fr)
  */
-class SheetRowContentBuilder
+class SheetRowContentBuilder extends AbstractBuilder
 {
-    use AnnotationReaderTrait;
+    /** @var CellConfigurationsExtractor */
+    protected $configurationExtractor;
 
-    /** @var CellStyleUtility */
-    protected $cellStyleUtility;
-
-    /** @var PropertyUtility */
-    protected $propertyUtility;
-
-    /** @var EventDispatcherInterface */
-    protected $eventDispatcher;
-
-    public function __construct(CellStyleUtility $cellStyleUtility, PropertyUtility $propertyUtility, EventDispatcherInterface $eventDispatcher)
+    public function __construct(CellConfigurationsExtractor $configurationExtractor)
     {
-        $this->cellStyleUtility = $cellStyleUtility;
-        $this->propertyUtility = $propertyUtility;
-        $this->eventDispatcher = $eventDispatcher;
+        $this->configurationExtractor = $configurationExtractor;
     }
 
     public function __invoke(Worksheet $worksheet, ExcelContent $excelContent): void
     {
-        $currentRow = $worksheet->getHighestRow();
-        $reflectionClass = new \ReflectionClass($excelContent);
-        $properties = $reflectionClass->getProperties(\ReflectionProperty::IS_PUBLIC);
+        $row = (int) $worksheet->getHighestRow();
+        $cellConfigurations = $this->configurationExtractor->getCellConfigurations($excelContent);
 
-        foreach ($properties as $index => $property) {
-            if (in_array($property->getName(), ['parent', 'children'], true)) {
-                continue;
-            }
-
-            $columnPointer = $index + 1;
-            $contentStyle = $this->getPropertyAnnotationForProperty($property, ContentStyle::class);
-            $columnMerge  = $this->getPropertyAnnotationForProperty($property, ColumnMerge::class);
-            $content = $property->getValue($excelContent);
-
-            $worksheet->setCellValueByColumnAndRow($columnPointer, $currentRow, $content);
-
-            if ($columnMerge instanceof ColumnMerge) {
-                $worksheet->mergeCellsByColumnAndRow(
-                    $columnPointer,
-                    $currentRow,
-                    $index + $columnMerge->count,
-                    $currentRow
-                );
-            }
-
-            if ($contentStyle !== null) {
-                $this->cellStyleUtility->setStyleOfDataFor($worksheet, $contentStyle, $currentRow, $columnPointer, $excelContent);
-            }
+        foreach ($cellConfigurations as $index => $configuration) {
+            $this->buildFromCellConfiguration($worksheet, $configuration, $index + 1, $row);
         }
+
+        $event = new ExcelRowGeneratedEvent($worksheet, $excelContent, $row);
+        $this->eventDispatcher->dispatch($event);
+    }
+
+    public function buildFromCellConfiguration(Worksheet $worksheet, CellConfiguration $configuration, int $column, int $row): void
+    {
+        $worksheet->setCellValueByColumnAndRow($column, $row, $configuration->getValue());
+
+        $event = new ExcelCellGeneratedEvent($worksheet, $configuration, $column, $row);
+        $this->eventDispatcher->dispatch($event);
     }
 }

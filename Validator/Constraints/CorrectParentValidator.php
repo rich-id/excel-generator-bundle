@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace RichId\ExcelGeneratorBundle\Constraints;
+namespace RichId\ExcelGeneratorBundle\Validator\Constraints;
 
 use RichId\ExcelGeneratorBundle\Model\AbstractExcelChild;
 use Symfony\Component\Validator\Constraint;
@@ -9,7 +9,7 @@ use Symfony\Component\Validator\ConstraintValidator;
 /**
  * Class CorrectParentValidator
  *
- * @package    RichId\ExcelGeneratorBundle\Constraints
+ * @package    RichId\ExcelGeneratorBundle\Validator\Constraints
  * @author     Nicolas Guilloux <nicolas.guilloux@rich-id.fr>
  * @copyright  2014 - 2021 Rich ID (https://www.rich-id.fr)
  */

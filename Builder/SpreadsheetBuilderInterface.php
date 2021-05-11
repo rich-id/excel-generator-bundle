@@ -14,5 +14,5 @@ use RichId\ExcelGeneratorBundle\Model\ExcelSpreadsheet;
  */
 interface SpreadsheetBuilderInterface
 {
-    public function build(ExcelSpreadsheet $excelSpreadsheet): Spreadsheet;
+    public function __invoke(ExcelSpreadsheet $excelSpreadsheet): Spreadsheet;
 }

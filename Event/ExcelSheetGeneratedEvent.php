@@ -3,31 +3,33 @@
 namespace RichId\ExcelGeneratorBundle\Event;
 
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
+use RichId\ExcelGeneratorBundle\Model\ExcelSheet;
 use Symfony\Contracts\EventDispatcher\Event;
 
 /**
- * Class SheetGeneratedEvent
+ * Class ExcelSheetGeneratedEvent
  *
  * @package   RichId\ExcelGeneratorBundle\Event
  * @author    Hugo Dumazeau <hugo.dumazeau@rich-id.fr>
  * @copyright 2014 - 2021 RichId (https://www.rich-id.fr)
  */
-class SheetGeneratedEvent extends Event
+class ExcelSheetGeneratedEvent extends Event
 {
+    /** @var ExcelSheet */
+    protected $model;
+
     /** @var Worksheet */
     protected $sheet;
 
-    private function __construct()
+    public function __construct(Worksheet $sheet, ExcelSheet $model)
     {
+        $this->sheet = $sheet;
+        $this->model = $model;
     }
 
-    public static function create(Worksheet $sheet): self
+    public function getModel(): ExcelSheet
     {
-        $event = new self();
-
-        $event->sheet = $sheet;
-
-        return $event;
+        return $this->model;
     }
 
     public function getSheet(): Worksheet

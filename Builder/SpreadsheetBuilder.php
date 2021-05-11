@@ -2,19 +2,23 @@
 
 namespace RichId\ExcelGeneratorBundle\Builder;
 
+use RichId\ExcelGeneratorBundle\Builder\Partials\AbstractBuilder;
 use RichId\ExcelGeneratorBundle\Builder\Partials\SheetColumnsSizeBuilder;
 use RichId\ExcelGeneratorBundle\Builder\Partials\SheetHeaderBuilder;
 use RichId\ExcelGeneratorBundle\Builder\Partials\SheetRowContentBuilder;
-use RichId\ExcelGeneratorBundle\Event\SheetGeneratedEvent;
-use RichId\ExcelGeneratorBundle\Event\SpreadsheetGeneratedEvent;
+use RichId\ExcelGeneratorBundle\Event\ExcelRowGeneratedEvent;
+use RichId\ExcelGeneratorBundle\Event\ExcelRowPreGeneratedEvent;
+use RichId\ExcelGeneratorBundle\Event\ExcelSheetGeneratedEvent;
+use RichId\ExcelGeneratorBundle\Event\ExcelSpreadsheetGeneratedEvent;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use RichId\ExcelGeneratorBundle\Exception\InvalidExcelSpreadsheetException;
+use RichId\ExcelGeneratorBundle\Helper\SpreadsheetHelper;
+use RichId\ExcelGeneratorBundle\Helper\WorksheetHelper;
 use RichId\ExcelGeneratorBundle\Model\ExcelContent;
 use RichId\ExcelGeneratorBundle\Model\ExcelSheet;
 use RichId\ExcelGeneratorBundle\Model\ExcelSpreadsheet;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Class SpreadsheetBuilder
@@ -23,39 +27,29 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
  * @author    Hugo Dumazeau <hugo.dumazeau@rich-id.fr>
  * @copyright 2014 - 2021 RichId (https://www.rich-id.fr)
  */
-class SpreadsheetBuilder implements SpreadsheetBuilderInterface
+class SpreadsheetBuilder extends AbstractBuilder implements SpreadsheetBuilderInterface
 {
-    /** @var EventDispatcherInterface */
-    protected $eventDispatcher;
-
     /** @var SheetHeaderBuilder */
     protected $sheetHeaderBuilder;
 
     /** @var SheetRowContentBuilder */
     protected $sheetRowContentBuilder;
 
-    /** @var SheetColumnsSizeBuilder */
-    protected $sheetColumnsSizeBuilder;
-
     /** @var ValidatorInterface */
     protected $validator;
 
     public function __construct(
-        EventDispatcherInterface $eventDispatcher,
         SheetHeaderBuilder $sheetHeaderBuilder,
         SheetRowContentBuilder $sheetRowContentBuilder,
-        SheetColumnsSizeBuilder $sheetColumnsSizeBuilder,
         ValidatorInterface $validator
     )
     {
-        $this->eventDispatcher = $eventDispatcher;
         $this->sheetHeaderBuilder = $sheetHeaderBuilder;
         $this->sheetRowContentBuilder = $sheetRowContentBuilder;
-        $this->sheetColumnsSizeBuilder = $sheetColumnsSizeBuilder;
         $this->validator = $validator;
     }
 
-    public function build(ExcelSpreadsheet $excelSpreadsheet): Spreadsheet
+    public function __invoke(ExcelSpreadsheet $excelSpreadsheet): Spreadsheet
     {
         $violations = $this->validator->validate($excelSpreadsheet);
 
@@ -63,19 +57,15 @@ class SpreadsheetBuilder implements SpreadsheetBuilderInterface
             throw new InvalidExcelSpreadsheetException($excelSpreadsheet, $violations);
         }
 
-        $sheets = $excelSpreadsheet->getSheets();
         $spreadsheet = new Spreadsheet();
+        $sheets = $excelSpreadsheet->getSheets();
 
         foreach ($sheets as $index => $sheet) {
-            $worksheet = $index === 0 ? $spreadsheet->getSheet(0) : new Worksheet();
+            $worksheet = SpreadsheetHelper::getOrCreateWorksheet($spreadsheet, $index);
             $this->buildSheet($worksheet, $sheet);
-
-            if ($index !== 0) {
-                $spreadsheet->addSheet($worksheet, $index);
-            }
         }
 
-        $event = SpreadsheetGeneratedEvent::create($spreadsheet);
+        $event = new ExcelSpreadsheetGeneratedEvent($spreadsheet, $excelSpreadsheet);
         $this->eventDispatcher->dispatch($event);
 
         return $spreadsheet;
@@ -89,7 +79,7 @@ class SpreadsheetBuilder implements SpreadsheetBuilderInterface
             $this->buildContent($worksheet, $child);
         }
 
-        $event = SheetGeneratedEvent::create($worksheet);
+        $event = new ExcelSheetGeneratedEvent($worksheet, $excelSheet);
         $this->eventDispatcher->dispatch($event);
 
         return $worksheet;
@@ -97,17 +87,14 @@ class SpreadsheetBuilder implements SpreadsheetBuilderInterface
 
     protected function buildContent(Worksheet $worksheet, ExcelContent $excelContent): void
     {
-//        if (!$configuration->isWithoutHeader()) {
-//            ($this->sheetHeaderBuilder)($sheet, $configuration);
-//        }
+        $event = new ExcelRowPreGeneratedEvent($worksheet, $excelContent);
+        $this->eventDispatcher->dispatch($event);
 
         ($this->sheetRowContentBuilder)($worksheet, $excelContent);
-        $worksheet->setCellValueByColumnAndRow(1, $worksheet->getHighestRow() + 1, '');
+        WorksheetHelper::newLine($worksheet);
 
         foreach ($excelContent->getChildren() as $child) {
             $this->buildContent($worksheet, $child);
         }
-
-//        ($this->sheetColumnsSizeBuilder)($sheet, $configuration);
     }
 }

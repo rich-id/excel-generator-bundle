@@ -2,7 +2,7 @@
 
 namespace RichId\ExcelGeneratorBundle\Model;
 
-use RichId\ExcelGeneratorBundle\Constraints\CorrectParent;
+use RichId\ExcelGeneratorBundle\Validator\Constraints as ExcelConstraints;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -28,7 +28,7 @@ class ExcelSpreadsheet
      * @Assert\Valid()
      * @Assert\All({
      *     @Assert\Type("RichId\ExcelGeneratorBundle\Model\ExcelSheet"),
-     *     @CorrectParent()
+     *     @ExcelConstraints\CorrectParent()
      * })
      */
     private $sheets = [];
