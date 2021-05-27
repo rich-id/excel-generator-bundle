@@ -6,13 +6,13 @@ use RichId\ExcelGeneratorBundle\Validator\Constraints as ExcelConstraints;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Class AbstractExcelChild
+ * Class AbstractExcelNode
  *
  * @package    RichId\ExcelGeneratorBundle\Model
  * @author     Nicolas Guilloux <nicolas.guilloux@rich-id.fr>
  * @copyright  2014 - 2021 Rich ID (https://www.rich-id.fr)
  */
-abstract class AbstractExcelChild
+abstract class AbstractExcelNode
 {
     /**
      * @var ExcelContent[]

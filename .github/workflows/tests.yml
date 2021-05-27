@@ -27,7 +27,7 @@ jobs:
 
             - name: Execute the tests 🔧
               run: |
-                  docker-compose exec -T application php -d extension=pcov.so ./bin/phpunit --configuration phpunit.xml.dist --colors=never --coverage--clover build/logs/clover.xml --coverage-text
+                  docker-compose exec -T application php -d extension=pcov.so ./bin/phpunit --configuration phpunit.xml.dist --colors=never --coverage-clover build/logs/clover.xml --coverage-text
 
             - name: Upload results to Coveralls 🚀
               env:

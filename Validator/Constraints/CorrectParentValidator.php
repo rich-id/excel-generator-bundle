@@ -2,7 +2,7 @@
 
 namespace RichId\ExcelGeneratorBundle\Validator\Constraints;
 
-use RichId\ExcelGeneratorBundle\Model\AbstractExcelChild;
+use RichId\ExcelGeneratorBundle\Model\AbstractExcelNode;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
@@ -17,7 +17,7 @@ class CorrectParentValidator extends ConstraintValidator
 {
     public function validate($value, Constraint $constraint): void
     {
-        if (!$value instanceof AbstractExcelChild || !$constraint instanceof CorrectParent) {
+        if (!$value instanceof AbstractExcelNode || !$constraint instanceof CorrectParent) {
             return;
         }
 

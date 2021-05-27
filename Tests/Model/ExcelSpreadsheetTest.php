@@ -3,7 +3,7 @@
 namespace RichId\ExcelGeneratorBundle\Tests\Model;
 
 use RichCongress\TestTools\Helper\ForceExecutionHelper;
-use RichId\ExcelGeneratorBundle\Model\AbstractExcelChild;
+use RichId\ExcelGeneratorBundle\Model\AbstractExcelNode;
 use RichId\ExcelGeneratorBundle\Model\ExcelSheet;
 use RichId\ExcelGeneratorBundle\Model\ExcelSpreadsheet;
 use RichId\ExcelGeneratorBundle\Tests\Resources\Model\DummyExcelContent;
@@ -17,8 +17,8 @@ use RichId\ExcelGeneratorBundle\Tests\Resources\TestCase\ModelTestCase;
  * @copyright  2014 - 2021 Rich ID (https://www.rich-id.fr)
  *
  * @covers \RichId\ExcelGeneratorBundle\Model\ExcelSpreadsheet
- * @covers \RichId\ExcelGeneratorBundle\Constraints\CorrectParent
- * @covers \RichId\ExcelGeneratorBundle\Constraints\CorrectParentValidator
+ * @covers \RichId\ExcelGeneratorBundle\Validator\Constraints\CorrectParent
+ * @covers \RichId\ExcelGeneratorBundle\Validator\Constraints\CorrectParentValidator
  */
 class ExcelSpreadsheetTest extends ModelTestCase
 {
@@ -73,7 +73,7 @@ class ExcelSpreadsheetTest extends ModelTestCase
 
         self::assertCount(2, $violations);
         self::assertStringContainsString('This value should be of type ' . ExcelSheet::class, $violations->get(0)->getMessage());
-        self::assertStringContainsString('This value should be of type ' . AbstractExcelChild::class, $violations->get(1)->getMessage());
+        self::assertStringContainsString('This value should be of type ' . AbstractExcelNode::class, $violations->get(1)->getMessage());
     }
 
     public function testInappropriateParent(): void

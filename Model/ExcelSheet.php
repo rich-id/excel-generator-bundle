@@ -11,7 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @author     Nicolas Guilloux <nicolas.guilloux@rich-id.fr>
  * @copyright  2014 - 2021 Rich ID (https://www.rich-id.fr)
  */
-class ExcelSheet extends AbstractExcelChild
+class ExcelSheet extends AbstractExcelNode
 {
     /**
      * @var ExcelSpreadsheet

@@ -11,13 +11,13 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @author     Nicolas Guilloux <nicolas.guilloux@rich-id.fr>
  * @copyright  2014 - 2021 Rich ID (https://www.rich-id.fr)
  */
-class ExcelContent extends AbstractExcelChild
+class ExcelContent extends AbstractExcelNode
 {
     /**
-     * @var AbstractExcelChild
+     * @var AbstractExcelNode
      *
      * @Assert\NotNull()
-     * @Assert\Type("RichId\ExcelGeneratorBundle\Model\AbstractExcelChild")
+     * @Assert\Type("RichId\ExcelGeneratorBundle\Model\AbstractExcelNode")
      */
     public $parent;
 }
