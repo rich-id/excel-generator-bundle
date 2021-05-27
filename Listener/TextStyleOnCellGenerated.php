@@ -4,6 +4,7 @@ namespace RichId\ExcelGeneratorBundle\Listener;
 
 use RichId\ExcelGeneratorBundle\Annotation\Style;
 use RichId\ExcelGeneratorBundle\Event\ExcelCellGeneratedEvent;
+use RichId\ExcelGeneratorBundle\Helper\ArrayHelper;
 use RichId\ExcelGeneratorBundle\Helper\ExpressionLanguageHelper;
 
 /**
@@ -19,13 +20,17 @@ class TextStyleOnCellGenerated extends AbstractStyleListener
     {
         /** @var Style $config */
         $config = $this->getConfiguration($event);
-
-        return array_merge(
-            $style,
+        $newStyles = [
             $this->getBoldStyle($config),
             $this->getColorStyle($config, $event),
             $this->getFontSizeStyle($config)
-        );
+        ];
+
+        foreach ($newStyles as $newStyle) {
+            $style = ArrayHelper::mergeOptions($style, $newStyle);
+        }
+
+        return $style;
     }
 
     protected function getBoldStyle(Style $config): array
@@ -52,6 +57,7 @@ class TextStyleOnCellGenerated extends AbstractStyleListener
         return [
             'font' => [
                 'color' => [
+                    'argb' => null,
                     'rgb' => \str_replace('#', '', $hexCode),
                 ],
             ],

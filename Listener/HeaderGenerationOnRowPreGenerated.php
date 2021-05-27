@@ -9,9 +9,11 @@ use RichId\ExcelGeneratorBundle\Builder\Partials\SheetRowContentBuilder;
 use RichId\ExcelGeneratorBundle\ConfigurationExtractor\CellConfigurationsExtractor;
 use RichId\ExcelGeneratorBundle\ConfigurationExtractor\Model\CellConfiguration;
 use RichId\ExcelGeneratorBundle\ConfigurationExtractor\Model\GeneratedCellConfiguration;
+use RichId\ExcelGeneratorBundle\Event\ExcelRowGeneratedEvent;
 use RichId\ExcelGeneratorBundle\Event\ExcelRowPreGeneratedEvent;
 use RichId\ExcelGeneratorBundle\Helper\AnnotationHelper;
 use RichId\ExcelGeneratorBundle\Helper\WorksheetHelper;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
@@ -26,19 +28,26 @@ class HeaderGenerationOnRowPreGenerated
     /** @var CellConfigurationsExtractor */
     protected $cellConfigurationsExtractor;
 
+    /** @var EventDispatcherInterface */
+    protected $eventDispatcher;
+
     /** @var SheetRowContentBuilder */
     protected $sheetRowContentBuilder;
 
     /** @var TranslatorInterface */
     protected $translator;
 
+    /** @var string[] */
+    private $alreadyRenderedHeaders = [];
+
     public function __construct(
         CellConfigurationsExtractor $cellConfigurationsExtractor,
+        EventDispatcherInterface $eventDispatcher,
         SheetRowContentBuilder $sheetRowContentBuilder,
         TranslatorInterface $translator
-    )
-    {
+    ) {
         $this->cellConfigurationsExtractor = $cellConfigurationsExtractor;
+        $this->eventDispatcher = $eventDispatcher;
         $this->sheetRowContentBuilder = $sheetRowContentBuilder;
         $this->translator = $translator;
     }
@@ -47,13 +56,17 @@ class HeaderGenerationOnRowPreGenerated
     {
         $cellConfigurations = $this->cellConfigurationsExtractor->getCellConfigurations($event->model);
         $row = (int) $event->worksheet->getHighestRow();
+        $newConfigurations = [];
+        $hashKey = $this->getHashKey($event);
 
-        if (!$this->hasHeader($cellConfigurations)) {
+        if (!$this->hasHeader($cellConfigurations) || in_array($hashKey, $this->alreadyRenderedHeaders, true)) {
             return;
         }
 
         foreach ($cellConfigurations as $index => $cellConfiguration) {
             $newConfiguration = $this->generateCellConfiguration($event, $cellConfiguration);
+            $newConfigurations[] = $newConfiguration;
+
             $this->sheetRowContentBuilder->buildFromCellConfiguration(
                 $event->worksheet,
                 $newConfiguration,
@@ -61,6 +74,10 @@ class HeaderGenerationOnRowPreGenerated
                 $row
             );
         }
+
+        $this->alreadyRenderedHeaders[] = $hashKey;
+        $newEvent = new ExcelRowGeneratedEvent($event->worksheet, $newConfigurations, $row);
+        $this->eventDispatcher->dispatch($newEvent);
 
         WorksheetHelper::newLine($event->worksheet);
     }
@@ -77,6 +94,14 @@ class HeaderGenerationOnRowPreGenerated
         }
 
         return false;
+    }
+
+    protected function getHashKey(ExcelRowPreGeneratedEvent $event): string
+    {
+        $modelClass = \get_class($event->model);
+        $parent = $event->model->parent;
+
+        return $modelClass . '_' . spl_object_hash($parent);
     }
 
     protected function generateCellConfiguration(ExcelRowPreGeneratedEvent $event, CellConfiguration $cellConfiguration): GeneratedCellConfiguration

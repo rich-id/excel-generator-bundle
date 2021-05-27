@@ -30,6 +30,10 @@ class AnnotationHelper extends AbstractHelper
      */
     public static function getClassAnnotation($class, string $annotation)
     {
+        if ($class === null) {
+            return null;
+        }
+
         $reflectionClass = $class instanceof \ReflectionClass ? $class : new \ReflectionClass($class);
 
         return static::getAnnotationReader()->getClassAnnotation($reflectionClass, $annotation);

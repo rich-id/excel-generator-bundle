@@ -1,16 +1,20 @@
 <?php declare(strict_types=1);
 
+namespace RichId\ExcelGeneratorBundle\Factory;
+
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use RichId\ExcelGeneratorBundle\Builder\SpreadsheetBuilderInterface;
+use RichId\ExcelGeneratorBundle\Model\ExcelSpreadsheet;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 /**
  * Class ExcelStreamedResponseFactory
  *
- * @author    Nicolas Guilloux <nicolas.guilloux@rich-id.fr>
- * @copyright 2014 - 2021 Rich ID (https://www.rich-id.fr)
+ * @package    RichId\ExcelGeneratorBundle\Factory
+ * @author     Nicolas Guilloux <nicolas.guilloux@rich-id.fr>
+ * @copyright  2014 - 2021 Rich ID (https://www.rich-id.fr)
  */
 class ExcelStreamedResponseFactory
 {
@@ -22,10 +26,11 @@ class ExcelStreamedResponseFactory
         $this->spreadsheetBuilder = $spreadsheetBuilder;
     }
 
-    public function __invoke(array $sheets, string $filename): StreamedResponse
+    public function __invoke(ExcelSpreadsheet $spreadsheet): StreamedResponse
     {
         $streamedResponse = new StreamedResponse();
-        $writer = self::generateWriter($this->spreadsheetBuilder->buildSpreadsheet($sheets));
+        $excel = ($this->spreadsheetBuilder)($spreadsheet);
+        $writer = self::generateWriter($excel);
 
         $streamedResponse->setCallback(
             function () use ($writer) {
@@ -35,7 +40,7 @@ class ExcelStreamedResponseFactory
 
         $streamedResponse->setStatusCode(Response::HTTP_OK);
         $streamedResponse->headers->set('Content-Type', 'application/vnd.ms-excel');
-        $streamedResponse->headers->set('Content-Disposition', \sprintf('attachment; filename="%s"', $filename));
+        $streamedResponse->headers->set('Content-Disposition', \sprintf('attachment; filename="%s"', $spreadsheet->filename));
 
         return $streamedResponse->send();
     }

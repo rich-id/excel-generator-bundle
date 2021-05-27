@@ -4,6 +4,7 @@ namespace RichId\ExcelGeneratorBundle\Listener;
 
 use RichId\ExcelGeneratorBundle\Annotation\Style;
 use RichId\ExcelGeneratorBundle\Event\ExcelCellGeneratedEvent;
+use RichId\ExcelGeneratorBundle\Helper\ArrayHelper;
 
 /**
  * Class AlignmentStyleOnCellGenerated
@@ -18,13 +19,17 @@ final class AlignmentStyleOnCellGenerated extends AbstractStyleListener
     {
         /** @var Style $config */
         $config = $this->getConfiguration($event);
-
-        return array_merge(
-            $style,
+        $newStyles = [
             $this->getHorizontalAlignment($config),
             $this->getVerticalAlignment($config),
             $this->getTextWrapping($config)
-        );
+        ];
+
+        foreach ($newStyles as $newStyle) {
+            $style = ArrayHelper::mergeOptions($style, $newStyle);
+        }
+
+        return $style;
     }
 
     protected function getHorizontalAlignment(Style $config): array

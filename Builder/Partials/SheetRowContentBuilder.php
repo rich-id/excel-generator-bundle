@@ -35,7 +35,7 @@ class SheetRowContentBuilder extends AbstractBuilder
             $this->buildFromCellConfiguration($worksheet, $configuration, $index + 1, $row);
         }
 
-        $event = new ExcelRowGeneratedEvent($worksheet, $excelContent, $row);
+        $event = new ExcelRowGeneratedEvent($worksheet, $cellConfigurations, $row, $excelContent);
         $this->eventDispatcher->dispatch($event);
     }
 

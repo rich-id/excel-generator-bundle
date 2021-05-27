@@ -3,6 +3,7 @@
 namespace RichId\ExcelGeneratorBundle\Event;
 
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
+use RichId\ExcelGeneratorBundle\ConfigurationExtractor\Model\CellConfiguration;
 use RichId\ExcelGeneratorBundle\Model\ExcelContent;
 
 /**
@@ -14,19 +15,28 @@ use RichId\ExcelGeneratorBundle\Model\ExcelContent;
  */
 class ExcelRowGeneratedEvent
 {
+    /** @var CellConfiguration[] */
+    public $cellConfigurations;
+
+    /** @var ExcelContent */
+    public $model;
+
     /** @var int */
     public $row;
 
     /** @var Worksheet */
     public $worksheet;
 
-    /** @var ExcelContent */
-    public $model;
-
-    public function __construct(Worksheet $worksheet, ExcelContent $model, int $row)
+    public function __construct(
+        Worksheet $worksheet,
+        array $cellConfigurations,
+        int $row,
+        ?ExcelContent $model = null
+    )
     {
         $this->worksheet = $worksheet;
-        $this->model = $model;
+        $this->cellConfigurations = $cellConfigurations;
         $this->row = $row;
+        $this->model = $model;
     }
 }

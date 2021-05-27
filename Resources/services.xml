@@ -7,10 +7,6 @@
     <services>
         <defaults autowire="true" autoconfigure="true" public="false"/>
 
-        <!-- Generator -->
-        <service id="RichId\ExcelGeneratorBundle\Generator\ExcelGenerator" />
-        <service id="RichId\ExcelGeneratorBundle\Generator\ExcelGeneratorInterface" alias="RichId\ExcelGeneratorBundle\Generator\ExcelGenerator" />
-
         <!-- Builders -->
         <service id="RichId\ExcelGeneratorBundle\Builder\Partials\SheetRowContentBuilder" />
         <service id="RichId\ExcelGeneratorBundle\Builder\SpreadsheetBuilder" />
@@ -18,6 +14,13 @@
 
         <!-- ConfigurationExtractors -->
         <service id="RichId\ExcelGeneratorBundle\ConfigurationExtractor\CellConfigurationsExtractor" />
+
+        <!-- Factory -->
+        <service id="RichId\ExcelGeneratorBundle\Factory\ExcelStreamedResponseFactory" />
+
+        <!-- Generator -->
+        <service id="RichId\ExcelGeneratorBundle\Generator\ExcelGenerator" />
+        <service id="RichId\ExcelGeneratorBundle\Generator\ExcelGeneratorInterface" alias="RichId\ExcelGeneratorBundle\Generator\ExcelGenerator" />
 
         <!-- Listeners -->
         <service id="RichId\ExcelGeneratorBundle\Listener\AlignmentStyleOnCellGenerated">
@@ -33,6 +36,9 @@
             <tag name="kernel.event_listener" priority="10" />
         </service>
         <service id="RichId\ExcelGeneratorBundle\Listener\ComputeColumnsSizeOnRowGenerated">
+            <tag name="kernel.event_listener" />
+        </service>
+        <service id="RichId\ExcelGeneratorBundle\Listener\ComputeRowHeightOnRowGenerated">
             <tag name="kernel.event_listener" />
         </service>
         <service id="RichId\ExcelGeneratorBundle\Listener\HeaderGenerationOnRowPreGenerated">
