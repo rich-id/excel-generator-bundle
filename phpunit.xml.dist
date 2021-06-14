@@ -10,7 +10,7 @@
 >
     <php>
         <ini name="error_reporting" value="-1"/>
-        <env name="KERNEL_DIR" value="Tests/Resources/Kernel"/>
+        <env name="KERNEL_DIR" value="tests/Resources/Kernel"/>
         <env name="KERNEL_CLASS" value="RichId\ExcelGeneratorBundle\Tests\Resources\Kernel\TestKernel"/>
         <env name="SYMFONY_DEPRECATIONS_HELPER" value="weak"/>
         <env name="SYMFONY_PHPUNIT_VERSION" value="8.5"/>
@@ -18,21 +18,19 @@
 
     <testsuites>
         <testsuite name="Excel Generator Bundle Test Suite">
-            <directory suffix="Test.php">Tests</directory>
+            <directory suffix="Test.php">tests</directory>
         </testsuite>
     </testsuites>
 
     <coverage processUncoveredFiles="true">
         <include>
-            <directory suffix=".php">.</directory>
+            <directory suffix=".php">src</directory>
         </include>
 
         <exclude>
             <directory>bin</directory>
             <directory>DependencyInjection</directory>
             <directory>Resources</directory>
-            <directory>Tests</directory>
-            <directory>vendor</directory>
             <file>RichIdExcelGeneratorBundle.php</file>
         </exclude>
     </coverage>
