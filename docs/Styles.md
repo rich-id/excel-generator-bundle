@@ -1,9 +1,10 @@
 # Styles
 
 Three annotations implements the main Style configuration:
-    - `RichId\ExcelGeneratorBundle\Annotation\ContentStyle`
-    - `RichId\ExcelGeneratorBundle\Annotation\HeaderStyle`
-    - `RichId\ExcelGeneratorBundle\Annotation\HeaderTitle`
+
+- `RichId\ExcelGeneratorBundle\Annotation\ContentStyle`
+- `RichId\ExcelGeneratorBundle\Annotation\HeaderStyle`
+- `RichId\ExcelGeneratorBundle\Annotation\HeaderTitle`
 
 As they all implement the same features, the configuration is the same but used in different contexts. For the
 following documentation, we will only use the `ContentStyle` annotation as the others are already explained in the
