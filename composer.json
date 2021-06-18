@@ -17,28 +17,53 @@
     },
     "require": {
         "php": ">=7.3",
+        "doctrine/annotations": "^1.12",
         "phpoffice/phpspreadsheet": "^1.16",
-        "richcongress/bundle-toolbox": "*",
-        "symfony/expression-language": "^4.4|^5.2"
+        "richcongress/bundle-toolbox": "^1.0",
+        "symfony/expression-language": "^4|^5",
+        "symfony/serializer-pack": "^1.0",
+        "symfony/translation": "^4|^5",
+        "symfony/validator": "^4|^5"
     },
     "require-dev": {
-        "richcongress/unit-bundle": "v2.0.0.x-dev",
         "infection/infection": "^0.16.4",
-        "php-coveralls/php-coveralls": "^2.1"
+        "php-coveralls/php-coveralls": "^2.1",
+        "richcongress/static-analysis": "dev-master",
+        "richcongress/test-suite": "^0.1",
+        "roave/security-advisories": "dev-latest"
     },
     "autoload": {
         "psr-4": {
-            "RichId\\ExcelGeneratorBundle\\": ""
+            "RichId\\ExcelGeneratorBundle\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "RichId\\ExcelGeneratorBundle\\Tests\\": "Tests/"
+            "RichId\\ExcelGeneratorBundle\\Tests\\": "tests/"
         }
     },
     "config": {
         "bin-dir": "bin",
         "discard-changes": true,
         "sort-packages": true
+    },
+    "scripts": {
+        "post-install-cmd": [
+            "cghooks add --ignore-lock"
+        ],
+        "post-update-cmd": [
+            "cghooks update"
+        ]
+    },
+
+    "extra": {
+        "hooks": {
+            "pre-commit": [
+                "./bin/php-cs-fixer fix"
+            ],
+            "pre-push": [
+                "./bin/php-cs-fixer fix --dry-run"
+            ]
+        }
     }
 }

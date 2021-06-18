@@ -27,3 +27,5 @@ coverage/
 
 # Database
 /.db
+cghooks.lock
+

@@ -1,0 +1,54 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <defaults autowire="true" autoconfigure="true" public="false"/>
+
+        <!-- Builders -->
+        <service id="RichId\ExcelGeneratorBundle\Builder\Partials\SheetRowContentBuilder" />
+        <service id="RichId\ExcelGeneratorBundle\Builder\SpreadsheetBuilder" />
+        <service id="RichId\ExcelGeneratorBundle\Builder\SpreadsheetBuilderInterface" alias="RichId\ExcelGeneratorBundle\Builder\SpreadsheetBuilder" />
+
+        <!-- ConfigurationExtractors -->
+        <service id="RichId\ExcelGeneratorBundle\ConfigurationExtractor\CellConfigurationsExtractor" />
+
+        <!-- Factory -->
+        <service id="RichId\ExcelGeneratorBundle\Factory\ExcelStreamedResponseFactory" />
+
+        <!-- Generator -->
+        <service id="RichId\ExcelGeneratorBundle\Generator\ExcelGenerator" />
+        <service id="RichId\ExcelGeneratorBundle\Generator\ExcelGeneratorInterface" alias="RichId\ExcelGeneratorBundle\Generator\ExcelGenerator" />
+
+        <!-- Listeners -->
+        <service id="RichId\ExcelGeneratorBundle\Listener\AlignmentStyleOnCellGenerated">
+            <tag name="kernel.event_listener" />
+        </service>
+        <service id="RichId\ExcelGeneratorBundle\Listener\BackgroundStyleOnCellGenerated">
+            <tag name="kernel.event_listener" />
+        </service>
+        <service id="RichId\ExcelGeneratorBundle\Listener\BorderStyleOnCellGenerated">
+            <tag name="kernel.event_listener" />
+        </service>
+        <service id="RichId\ExcelGeneratorBundle\Listener\ColumnMergingOnCellGenerated">
+            <tag name="kernel.event_listener" priority="10" />
+        </service>
+        <service id="RichId\ExcelGeneratorBundle\Listener\ComputeColumnsSizeOnRowGenerated">
+            <tag name="kernel.event_listener" />
+        </service>
+        <service id="RichId\ExcelGeneratorBundle\Listener\ComputeRowHeightOnRowGenerated">
+            <tag name="kernel.event_listener" />
+        </service>
+        <service id="RichId\ExcelGeneratorBundle\Listener\HeaderGenerationOnRowPreGenerated">
+            <tag name="kernel.event_listener" />
+        </service>
+        <service id="RichId\ExcelGeneratorBundle\Listener\TextStyleOnCellGenerated">
+            <tag name="kernel.event_listener" />
+        </service>
+
+        <!-- Validations -->
+        <service id="RichId\ExcelGeneratorBundle\Validator\Constraints\CorrectParentValidator" />
+    </services>
+</container>
