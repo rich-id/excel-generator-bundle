@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Listener;
 
@@ -6,9 +8,8 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use RichId\ExcelGeneratorBundle\Tests\Resources\TestCase\ListenerTestCase;
 
 /**
- * Class HeaderGenerationOnRowPreGeneratedTest
+ * Class HeaderGenerationOnRowPreGeneratedTest.
  *
- * @package    Listener
  * @author     Nicolas Guilloux <nicolas.guilloux@rich-id.fr>
  * @copyright  2014 - 2021 Rich ID (https://www.rich-id.fr)
  *

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Validator\Constraints;
 
@@ -9,13 +11,11 @@ use RichId\ExcelGeneratorBundle\Model\ExcelSheet;
 use RichId\ExcelGeneratorBundle\Model\ExcelSpreadsheet;
 use RichId\ExcelGeneratorBundle\Validator\Constraints\CorrectParent;
 use RichId\ExcelGeneratorBundle\Validator\Constraints\CorrectParentValidator;
-use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\NotNull;
 
 /**
- * Class CorrectParentValidatorTest
+ * Class CorrectParentValidatorTest.
  *
- * @package    Validator\Constraints
  * @author     Nicolas Guilloux <nicolas.guilloux@rich-id.fr>
  * @copyright  2014 - 2021 Rich ID (https://www.rich-id.fr)
  *

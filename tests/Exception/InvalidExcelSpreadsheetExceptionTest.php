@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Exception;
 
@@ -8,9 +10,8 @@ use RichId\ExcelGeneratorBundle\Model\ExcelSpreadsheet;
 use Symfony\Component\Validator\ValidatorBuilder;
 
 /**
- * Class InvalidExcelSpreadsheetExceptionTest
+ * Class InvalidExcelSpreadsheetExceptionTest.
  *
- * @package    Exception
  * @author     Nicolas Guilloux <nicolas.guilloux@rich-id.fr>
  * @copyright  2014 - 2021 Rich ID (https://www.rich-id.fr)
  *

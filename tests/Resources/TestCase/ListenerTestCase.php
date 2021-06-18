@@ -13,9 +13,8 @@ use RichId\ExcelGeneratorBundle\Model\ExcelSpreadsheet;
 use RichId\ExcelGeneratorBundle\Tests\Resources\Model\DummyExcelContent;
 
 /**
- * Class ListenerTestCase
+ * Class ListenerTestCase.
  *
- * @package    RichId\ExcelGeneratorBundle\Tests\Resources\TestCase
  * @author     Nicolas Guilloux <nicolas.guilloux@rich-id.fr>
  * @copyright  2014 - 2021 Rich ID (https://www.rich-id.fr)
  *

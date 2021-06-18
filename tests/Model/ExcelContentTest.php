@@ -4,18 +4,14 @@ declare(strict_types=1);
 
 namespace RichId\ExcelGeneratorBundle\Tests\Model;
 
-use RichCongress\TestTools\Helper\ForceExecutionHelper;
-use RichId\ExcelGeneratorBundle\Model\AbstractExcelNode;
 use RichId\ExcelGeneratorBundle\Model\ExcelContent;
 use RichId\ExcelGeneratorBundle\Model\ExcelSheet;
 use RichId\ExcelGeneratorBundle\Model\ExcelSpreadsheet;
-use RichId\ExcelGeneratorBundle\Tests\Resources\Model\DummyExcelContent;
 use RichId\ExcelGeneratorBundle\Tests\Resources\TestCase\ModelTestCase;
 
 /**
- * Class ExcelContentTest
+ * Class ExcelContentTest.
  *
- * @package    RichId\ExcelGeneratorBundle\Tests\Model
  * @author     Nicolas Guilloux <nicolas.guilloux@rich-id.fr>
  * @copyright  2014 - 2021 Rich ID (https://www.rich-id.fr)
  *
