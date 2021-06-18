@@ -77,7 +77,10 @@ class PersonContent extends ExcelContent
 # Table of content
 
 1. [Installation](#1-installation)
-2. [Getting started](#2-getting-started)
+2. [Configuration](#2-configuration)
+    - [Columns](docs/Columns.md)
+    - [Headers](docs/Headers.md)
+    - [Styles](docs/Styles.md)
 3. [Versioning](#3-versioning)
 4. [Contributing](#4-contributing)
 5. [Hacking](#5-hacking)
@@ -92,9 +95,11 @@ This version of the bundle requires Symfony 4.4+ and PHP 7.3+.
 composer require rich-id/excel-generator-bundle
 ```
 
-# 2 Getting started
+# 2. Configuration
 
+- [Columns](docs/Columns.md)
 - [Headers](docs/Headers.md)
+- [Styles](docs/Styles.md)
 
 
 # 3. Versioning

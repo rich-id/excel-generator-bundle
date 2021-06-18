@@ -11,6 +11,7 @@ the class under.
 You will transform all the people into a list of `PersonContent`. From there, if the list is empty, the header will be
 not added to your sheet since no data are available.
 
+About the Header style, checkout the [Styles](Styles.md) documentation. Both annotation inherits from the global style annotation.
 
 ```php
 use RichId\ExcelGeneratorBundle\Annotation as Excel;
@@ -24,7 +25,6 @@ class PersonContent extends ExcelContent
     /**
      * @var string
      *            
-     * @Excel\ContentStyle(color="#000000", fontSize=12, wrapText=true)
      * @Excel\HeaderTitle(title="app.person.firstname")
      */
    public $firstname;
@@ -32,7 +32,6 @@ class PersonContent extends ExcelContent
     /**
      * @var string
      *            
-     * @Excel\ContentStyle(color="#000000", fontSize=12, bold=true, wrapText=true)
      * @Excel\HeaderTitle(title="app.person.lastname")
      */
    public $lastname;
@@ -40,7 +39,6 @@ class PersonContent extends ExcelContent
     /**
      * @var string
      *            
-     * @Excel\ContentStyle(color="#000000", fontSize=10)
      * @Excel\HeaderTitle(title="app.person.age")
      */
    public $age;
