@@ -17,15 +17,6 @@ class AnnotationHelper extends AbstractHelper
     /** @var AnnotationReader */
     private static $annotationReader;
 
-    public static function getAnnotationReader(): AnnotationReader
-    {
-        if (static::$annotationReader === null) {
-            static::$annotationReader = new AnnotationReader();
-        }
-
-        return static::$annotationReader;
-    }
-
     /** @param \ReflectionClass|string|object $class */
     public static function getClassAnnotation($class, string $annotation)
     {
@@ -41,5 +32,14 @@ class AnnotationHelper extends AbstractHelper
     public static function getPropertyAnnotation(\ReflectionProperty $property, string $annotation)
     {
         return static::getAnnotationReader()->getPropertyAnnotation($property, $annotation);
+    }
+
+    private static function getAnnotationReader(): AnnotationReader
+    {
+        if (static::$annotationReader === null) {
+            static::$annotationReader = new AnnotationReader();
+        }
+
+        return static::$annotationReader;
     }
 }

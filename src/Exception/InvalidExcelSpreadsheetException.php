@@ -28,4 +28,14 @@ class InvalidExcelSpreadsheetException extends \InvalidArgumentException impleme
 
         parent::__construct('Invalid excel spreadsheet.');
     }
+
+    public function getExcelSpreadsheet(): ExcelSpreadsheet
+    {
+        return $this->excelSpreadsheet;
+    }
+
+    public function getViolations(): ConstraintViolationListInterface
+    {
+        return $this->violations;
+    }
 }

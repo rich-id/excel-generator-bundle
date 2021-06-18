@@ -90,11 +90,11 @@ class SpreadsheetBuilderTest extends TestCase
         $sheet = $spreadsheet->getAllSheets()[0] ?? null;
         self::assertInstanceOf(Worksheet::class, $sheet);
 
-        self::assertSame('First property', $sheet->getCell('A1')->getValue());
-        self::assertSame(2, $sheet->getCell('B1')->getValue());
-        self::assertTrue($sheet->getCell('C1')->getValue());
         self::assertSame('First property', $sheet->getCell('A2')->getValue());
         self::assertSame(2, $sheet->getCell('B2')->getValue());
         self::assertTrue($sheet->getCell('C2')->getValue());
+        self::assertSame('First property', $sheet->getCell('A3')->getValue());
+        self::assertSame(2, $sheet->getCell('B3')->getValue());
+        self::assertTrue($sheet->getCell('C3')->getValue());
     }
 }

@@ -10,7 +10,7 @@ namespace RichId\ExcelGeneratorBundle\Helper;
  * @author     Nicolas Guilloux <nicolas.guilloux@rich-id.fr>
  * @copyright  2014 - 2021 Rich ID (https://www.rich-id.fr)
  */
-final class ArrayHelper
+final class ArrayHelper extends AbstractHelper
 {
     public static function mergeOptions(array $base, array $data): array
     {
