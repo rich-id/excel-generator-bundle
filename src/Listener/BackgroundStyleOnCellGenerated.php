@@ -28,7 +28,7 @@ class BackgroundStyleOnCellGenerated extends AbstractStyleListener
 
         $hexCode = ExpressionLanguageHelper::evaluate($config->backgroundColor, $event->model);
 
-        if ($hexCode === null) {
+        if ($hexCode === null || $hexCode === '') {
             return $style;
         }
 
