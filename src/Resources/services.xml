@@ -16,6 +16,7 @@
         <service id="RichId\ExcelGeneratorBundle\ConfigurationExtractor\CellConfigurationsExtractor" />
 
         <!-- Factory -->
+        <service id="RichId\ExcelGeneratorBundle\Factory\ExcelResponseFactory" />
         <service id="RichId\ExcelGeneratorBundle\Factory\ExcelStreamedResponseFactory" />
 
         <!-- Generator -->
